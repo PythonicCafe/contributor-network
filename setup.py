@@ -21,7 +21,7 @@ with open("requirements.txt", mode="r") as fobj:
 
 setuptools.setup(
     name="contributor-network",
-    version="0.1.0",
+    version="0.1.1-dev0",
     author="Álvaro Justen",
     author_email="alvarojusten@gmail.com",
     description="Create an interactive contributor network graph from git/hg repository",
