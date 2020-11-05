@@ -1,0 +1,4 @@
+name,repository_type,repository_url,depended_by
+contributor-network,git,/home/turicas/projects/contributor-network/.git,
+lxml,git,https://github.com/lxml/lxml,contributor-network
+tqdm,git,https://github.com/tqdm/tqdm,contributor-network

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contributors</title>
+
+    <style type="text/css">
+      body {
+        font: 10pt arial;
+      }
+      #mynetwork {
+        width: 1900px;
+        height: 940px;
+        border: 0px;
+        background-color: white;
+      }
+    </style>
+
+    <script type="text/javascript" src="static/js/vis-network.min.js"></script>
+    <script type="text/javascript" src="static/js/jquery.min.js"></script>
+
+    <script type="text/javascript">
+      var network, nodes, edges;
+
+      function draw() {
+        nodes = new vis.DataSet();
+        edges = new vis.DataSet();
+        var container = document.getElementById("mynetwork");
+        var options = {
+          nodes: {
+            borderWidth: 4,
+            size: 30,
+            color: {
+              border: "#222222",
+              background: "#666666",
+            },
+            font: { color: "#000000" },
+            widthConstraint: 80,
+          },
+          edges: {
+            color: "lightgray",
+            arrows: "to",
+          },
+          physics: {
+              enabled: true,
+              barnesHut: {
+                  gravitationalConstant: -10000,
+                  springConstant: 0.01
+              },
+              stabilization: {
+                  enabled: true,
+                  iterations: 2000,
+                  updateInterval: 10
+              }
+          },
+        };
+        network = new vis.Network(container, {nodes: nodes, edges: edges}, options);
+
+        $.getJSON("data/network.json").done(function(networkData) {
+          console.log(networkData.nodes);
+          nodes.update(networkData.nodes);
+          edges.update(networkData.edges);
+
+          network.on("doubleClick", function(prop){
+              var nodeIds = prop.nodes;
+              if (nodeIds.length > 0) {
+                $.getJSON(`data/${nodeIds[0]}.json`).done(function(nodeData) {
+                  nodes.update(nodeData.nodes);
+                  edges.update(nodeData.edges);
+                });
+              }
+          });
+
+        });
+      }
+    </script>
+  </head>
+
+  <body onload="draw()">
+    <div id="mynetwork"></div>
+  </body>
+</html>
