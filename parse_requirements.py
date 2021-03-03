@@ -89,9 +89,10 @@ if __name__ == "__main__":
         last_status_len = 0
         for path in args.path:
             path = Path(path).absolute()
-            repository_path = str(path.relative_to(current_path))
+            repository_path = path.relative_to(current_path)
             for found_inside_package, (filename, package) in enumerate(parse_all_requirements(path), start=1):
-                writer.writerow({"repository_path": repository_path, "requirements_filename": filename.name, "package": package})
+                filename = repository_path / filename
+                writer.writerow({"repository_path": str(filename.parent), "requirements_filename": filename.name, "package": package})
                 total_found += 1
                 print_status(f"Searching {repository_path}...  {found_inside_package:02d} found (total: {total_found:03d})")
         print_status(f"Done! Check {args.output_filename} for results.\n")
